@@ -4,20 +4,7 @@ http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/
 http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd">
     
     
-	<flow name="create-flow" doc:id="0aad4283-8c7b-43e8-bce7-d25fb4052621" >
-		<vm:listener queueName="create" doc:name="Listener" doc:id="018c3cbd-b229-4272-be65-043b4587038c" config-ref="VM_Config" />
-		<ee:transform doc:name="Transform Message" doc:id="26850fa2-f15e-4653-9930-dcc997bff6fd">
-			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-	responseCode : "000",
-	responseMessage : "Success"
-}]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-	</flow>
+	
 	<flow name="p-customer-main">
         <http:listener config-ref="p-customer-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -137,6 +124,7 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
+    
     <flow name="post:\create:application\json:p-customer-config">
         <logger level="INFO" message='"Call to create customer endpoint"' />
 		<vm:publish-consume doc:id="6b8d47e4-a633-48e8-9a83-5bb06926270d" config-ref="VM_Config" queueName='create' timeout="5000"/>
